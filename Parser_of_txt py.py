@@ -1,7 +1,8 @@
+import json
 #прием и проверка пути
 def way_check():
     while True:
-        user_way = input("Введи путь к файлу: ").strip('"/ ')
+        user_way = input("Введи путь к файлу: ").strip('"/\ ')
         try:
             with open(user_way, 'r', encoding= 'utf8') as user_file:
                 print(f"Путь подтвержден: {user_way}")
@@ -33,9 +34,28 @@ def work(nway):
                 Critical_list.append((line_num,line))  
                 Critical_count+=1  
     print(f"INFO: {Info_count}, WARNING: {Warning_count}, ERROR: {Error_count}, CRITICAL: {Critical_count}")                
-    print(f"INFO: {Info_list}, WARNING: {Warning_list}, ERROR: {Error_list}, CRITICAL: {Critical_list}")
+    for line_num,line in Info_list:
+        print(f"Строка {line_num}: {line.strip()}")
+    for line_num,line in Warning_list:
+        print(f"Строка {line_num}: {line.strip()}")
+    for line_num,line in Error_list:
+        print(f"Строка {line_num}: {line.strip()}")
+    for line_num,line in Critical_list:
+        print(f"Строка {line_num}: {line.strip()}")
+    logs_data = {
+        "INFO": {"count": Info_count, "items": Info_list},
+        "WARNING": {"count": Warning_count, "items": Warning_list},
+        "ERROR": {"count": Error_count, "items": Error_list},
+        "CRITICAL": {"count": Critical_count, "items": Critical_list}
+    } 
+    return logs_data   
+def save_to_json(data, filename="report.json"):
+    with open(filename, "w", encoding="utf8") as user_file:
+        json.dump(data, user_file, ensure_ascii=False, indent=4)
 def main():
-    nway=way_check()
-    work(nway)
+    nway = way_check()
+    parsed_data = work(nway)  # Вызываем один раз и сохраняем результат
+    save_to_json(parsed_data) # Передаем сохраненные данные в JSON
+    print("Отчет успешно сохранен в report.json!")
 if __name__=="__main__":
-    main()            
+    main()
