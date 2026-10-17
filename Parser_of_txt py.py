@@ -3,12 +3,37 @@ def way_check():
     while True:
         user_way = input("Введи путь к файлу: ").strip('"/ ')
         try:
-            with open(user_way, 'r') as user_file:
+            with open(user_way, 'r', encoding= 'utf8') as user_file:
                 print(f"Путь подтвержден: {user_way}")
                 return user_way
         except FileNotFoundError:
             print("Not Found. Попробуй еще раз.")
-def work(nway):pass            
+def work(nway):
+# пoдсчет для INFO, WARNING, ERROR,CRITICAL 
+    Info_list=[]
+    Info_count=0
+    Warning_list=[]  
+    Warning_count=0
+    Error_list=[]
+    Error_count=0
+    Critical_list=[]
+    Critical_count=0
+    with open (nway, "r", encoding='utf8') as user_file:
+        for line_num,line in enumerate (user_file, start=1):  
+            if "INFO" in line:
+                Info_list.append((line_num,line)) 
+                Info_count=Info_count+1
+            if"WARNING" in line:
+                Warning_list.append((line_num,line)) 
+                Warning_count=Warning_count+1
+            if "ERROR"in line:
+                Error_list.append((line_num,line))
+                Error_count+=1
+            if "CRITICAL" in line:
+                Critical_list.append((line_num,line))  
+                Critical_count+=1  
+    print(f"INFO: {Info_count}, WARNING: {Warning_count}, ERROR: {Error_count}, CRITICAL: {Critical_count}")                
+    print(f"INFO: {Info_list}, WARNING: {Warning_list}, ERROR: {Error_list}, CRITICAL: {Critical_list}")
 def main():
     nway=way_check()
     work(nway)
