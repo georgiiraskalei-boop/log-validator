@@ -2,7 +2,7 @@ import json
 #прием и проверка пути
 def way_check():
     while True:
-        user_way = input("Введи путь к файлу: ").strip('"/\ ')
+        user_way = input("Введи путь к файлу: ").strip(r'"/\ ')
         try:
             with open(user_way, 'r', encoding= 'utf8') as user_file:
                 print(f"Путь подтвержден: {user_way}")
