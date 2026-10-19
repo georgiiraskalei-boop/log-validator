@@ -1,14 +1,16 @@
 import json
+from pathlib import Path
 #прием и проверка пути
 def way_check():
     while True:
         user_way = input("Введи путь к файлу: ").strip(r'"/\ ')
-        try:
-            with open(user_way, 'r', encoding= 'utf8') as user_file:
-                print(f"Путь подтвержден: {user_way}")
-                return user_way
-        except FileNotFoundError:
-            print("Not Found. Попробуй еще раз.")
+        
+        # Проверяем существование файла средствами pathlib
+        if Path(user_way).is_file():
+            print(f"Путь подтвержден: {user_way}")
+            return user_way
+        else:
+            print("Файл не найден или это папка. Попробуй еще раз.")
 def work(nway):
 # пoдсчет для INFO, WARNING, ERROR,CRITICAL 
     Info_list=[]
